@@ -1,14 +1,14 @@
-/* Pie de página. */
+import { perfil, contacto } from "../data.js";
+import { IconGithub, IconLinkedin, IconMail } from "./Icons.jsx";
 
-function Footer() {
-  const { perfil, contacto } = window.DATA;
+export default function Footer() {
   const anio = new Date().getFullYear();
 
   return (
     <footer className="footer">
       <div className="wrap">
         <p>
-          © {anio} {perfil.nombreCompleto} — Hecho con React y JavaScript.
+          © {anio} {perfil.nombreCompleto} — Hecho con React y Vite.
         </p>
 
         <div className="footer-social">
@@ -23,6 +23,7 @@ function Footer() {
               <IconGithub size={18} />
             </a>
           )}
+
           {contacto.linkedin && (
             <a
               className="icon-btn"
@@ -34,10 +35,11 @@ function Footer() {
               <IconLinkedin size={18} />
             </a>
           )}
+
           {contacto.email && (
             <a
               className="icon-btn"
-              href={"mailto:" + contacto.email}
+              href={`mailto:${contacto.email}`}
               aria-label="Enviar un correo"
             >
               <IconMail size={18} />

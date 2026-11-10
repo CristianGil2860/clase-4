@@ -1,0 +1,12 @@
+# dependencias
+node_modules/
+
+# build
+dist/
+
+# logs y varios
+npm-debug.log*
+yarn-error.log*
+.DS_Store
+.vscode/
+.idea/

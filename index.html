@@ -9,32 +9,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles.css" />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128187;</text></svg>" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 </head>
 <body>
   <a class="skip-link" href="#inicio">Saltar al contenido</a>
+
+  <!-- React monta toda la página acá dentro -->
   <div id="root"></div>
 
-  <!-- React + Babel por CDN: no requiere build ni npm install -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js" crossorigin></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js" crossorigin></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.4/babel.min.js" crossorigin></script>
-
-  <!-- Datos editables (JS puro) -->
-  <script src="src/data.js"></script>
-
-  <!-- Componentes (JSX, compilados en el navegador por Babel) -->
-  <script type="text/babel" data-presets="react" src="src/components/Icons.js"></script>
-  <script type="text/babel" data-presets="react" src="src/components/Section.js"></script>
-  <script type="text/babel" data-presets="react" src="src/components/Nav.js"></script>
-  <script type="text/babel" data-presets="react" src="src/components/Hero.js"></script>
-  <script type="text/babel" data-presets="react" src="src/components/Sobre.js"></script>
-  <script type="text/babel" data-presets="react" src="src/components/Skills.js"></script>
-  <script type="text/babel" data-presets="react" src="src/components/Proyectos.js"></script>
-  <script type="text/babel" data-presets="react" src="src/components/Experiencia.js"></script>
-  <script type="text/babel" data-presets="react" src="src/components/Contacto.js"></script>
-  <script type="text/babel" data-presets="react" src="src/components/Footer.js"></script>
-  <script type="text/babel" data-presets="react" src="src/app.js"></script>
+  <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

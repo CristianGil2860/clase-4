@@ -1,12 +1,22 @@
-/* Componente raíz: arma la página, guarda el tema elegido
-   y marca en el menú la sección que se está viendo. */
+import { useState, useEffect } from "react";
 
+import Nav from "./components/Nav.jsx";
+import Hero from "./components/Hero.jsx";
+import Sobre from "./components/Sobre.jsx";
+import Skills from "./components/Skills.jsx";
+import Proyectos from "./components/Proyectos.jsx";
+import Experiencia from "./components/Experiencia.jsx";
+import Contacto from "./components/Contacto.jsx";
+import Footer from "./components/Footer.jsx";
+import { SECCIONES } from "./data.js";
+
+/* Hook propio: guarda el tema elegido y lo recuerda entre visitas. */
 function useTema() {
-  const [tema, setTema] = React.useState(function () {
+  const [tema, setTema] = useState(() => {
     let guardado = null;
     try {
       guardado = localStorage.getItem("tema");
-    } catch (e) {
+    } catch {
       guardado = null;
     }
     if (guardado === "dark" || guardado === "light") return guardado;
@@ -16,43 +26,41 @@ function useTema() {
     return oscuroSistema ? "dark" : "light";
   });
 
-  React.useEffect(function () {
+  useEffect(() => {
     document.documentElement.setAttribute("data-theme", tema);
     try {
       localStorage.setItem("tema", tema);
-    } catch (e) {
+    } catch {
       /* modo privado o storage bloqueado: no pasa nada */
     }
   }, [tema]);
 
-  function cambiar() {
-    setTema(tema === "dark" ? "light" : "dark");
-  }
+  const cambiarTema = () => setTema((t) => (t === "dark" ? "light" : "dark"));
 
-  return [tema, cambiar];
+  return [tema, cambiarTema];
 }
 
+/* Hook propio: devuelve el id de la sección que se está viendo. */
 function useSeccionActiva() {
-  const [activa, setActiva] = React.useState("");
+  const [activa, setActiva] = useState("");
 
-  React.useEffect(function () {
-    const ids = window.SECCIONES.map(function (s) { return s.id; });
+  useEffect(() => {
+    const ids = SECCIONES.map((s) => s.id);
 
-    function calcular() {
+    const calcular = () => {
       let actual = "";
-      ids.forEach(function (id) {
+      ids.forEach((id) => {
         const el = document.getElementById(id);
         if (!el) return;
-        const top = el.getBoundingClientRect().top;
-        if (top <= 140) actual = id;
+        if (el.getBoundingClientRect().top <= 140) actual = id;
       });
       setActiva(actual);
-    }
+    };
 
     calcular();
     window.addEventListener("scroll", calcular, { passive: true });
     window.addEventListener("resize", calcular);
-    return function () {
+    return () => {
       window.removeEventListener("scroll", calcular);
       window.removeEventListener("resize", calcular);
     };
@@ -61,15 +69,14 @@ function useSeccionActiva() {
   return activa;
 }
 
-function App() {
-  const temaHook = useTema();
-  const tema = temaHook[0];
-  const cambiarTema = temaHook[1];
+export default function App() {
+  const [tema, cambiarTema] = useTema();
   const activa = useSeccionActiva();
 
   return (
-    <React.Fragment>
+    <>
       <Nav tema={tema} onCambiarTema={cambiarTema} activa={activa} />
+
       <main>
         <Hero />
         <Sobre />
@@ -78,9 +85,8 @@ function App() {
         <Experiencia />
         <Contacto />
       </main>
+
       <Footer />
-    </React.Fragment>
+    </>
   );
 }
-
-ReactDOM.createRoot(document.getElementById("root")).render(<App />);

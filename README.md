@@ -1,67 +1,87 @@
 # Landing personal — Cristian Gil
 
-Landing page personal hecha con **React 18** y **JavaScript**, sin build ni dependencias
-para instalar: React, ReactDOM y Babel se cargan por CDN y el JSX se compila en el navegador.
+Landing page personal hecha con **React 18** y **Vite**.
 
-## Cómo verla
+## Cómo levantarla
 
-Con XAMPP corriendo, la carpeta va dentro de `htdocs`:
+Hace falta [Node.js](https://nodejs.org) 18 o superior.
 
+```bash
+npm install     # instala React, ReactDOM y Vite
+npm run dev     # abre http://localhost:5173
 ```
-http://localhost/clase4/
-```
 
-También se puede abrir con cualquier servidor estático. **No funciona** abriendo
-`index.html` con doble clic (`file://`), porque Babel necesita cargar los archivos
-de `src/` por HTTP.
+Otros comandos:
+
+```bash
+npm run build    # genera la versión de producción en dist/
+npm run preview  # sirve dist/ para probar el build
+```
 
 ## Estructura
 
 ```
 clase4/
-├── index.html                  # Carga React, Babel y los componentes
-├── css/
-│   └── styles.css              # Estilos: variables de color, tema claro/oscuro, responsive
+├── index.html                   # Único HTML: React monta todo en <div id="root">
+├── package.json                 # Dependencias y scripts
+├── vite.config.js               # Configuración de Vite + plugin de React
+├── public/
+│   └── favicon.svg
 ├── src/
-│   ├── data.js                 # ← TODO el contenido de la página (editá solo esto)
-│   ├── app.js                  # Componente raíz, tema y sección activa
+│   ├── main.jsx                 # Punto de entrada: createRoot().render(<App />)
+│   ├── App.jsx                  # Componente raíz + hooks useTema y useSeccionActiva
+│   ├── data.js                  # ← TODO el contenido de la página (editá solo esto)
+│   ├── styles.css               # Variables de color, tema claro/oscuro, responsive
 │   └── components/
-│       ├── Icons.js            # Íconos SVG inline
-│       ├── Section.js          # Reveal (animación al scrollear) + envoltorio de sección
-│       ├── Nav.js              # Navbar con menú mobile y botón de tema
-│       ├── Hero.js             # Portada con efecto de tipeo y métricas
-│       ├── Sobre.js            # Sobre mí
-│       ├── Skills.js           # Tecnologías agrupadas
-│       ├── Proyectos.js        # Grilla de proyectos con filtro por rubro
-│       ├── Experiencia.js      # Línea de tiempo
-│       ├── Contacto.js         # Formulario validado + enlaces
-│       └── Footer.js
+│       ├── Icons.jsx            # Íconos SVG inline
+│       ├── Section.jsx          # Section + Reveal (animación al scrollear)
+│       ├── Nav.jsx              # Navbar con menú mobile y botón de tema
+│       ├── Hero.jsx             # Portada con efecto de tipeo y métricas
+│       ├── Sobre.jsx            # Sobre mí
+│       ├── Skills.jsx           # Tecnologías agrupadas
+│       ├── Proyectos.jsx        # Grilla de proyectos con filtro por rubro
+│       ├── Experiencia.jsx      # Línea de tiempo
+│       ├── Contacto.jsx         # Formulario controlado + enlaces
+│       └── Footer.jsx
 └── README.md
 ```
+
+## Conceptos de React que se usan
+
+| Concepto | Dónde verlo |
+|---|---|
+| Componentes y props | todos los archivos de `src/components/` |
+| `useState` | `Proyectos.jsx` (filtro), `Contacto.jsx` (formulario controlado) |
+| `useEffect` | `App.jsx` (tema y scroll), `Nav.jsx`, `Hero.jsx` |
+| `useMemo` | `Proyectos.jsx` (rubros derivados de los datos) |
+| `useRef` | `Section.jsx` (referencia al nodo para el observer) |
+| Hooks propios | `useTema` y `useSeccionActiva` en `App.jsx`, `useTipeo` en `Hero.jsx` |
+| Renderizado de listas con `key` | `.map()` en Skills, Proyectos, Experiencia |
+| Renderizado condicional | badge de disponibilidad, menú mobile, errores del formulario |
+| Composición con `children` | `Section.jsx` y `Reveal` envuelven otros componentes |
 
 ## Personalizar
 
 Todo el contenido vive en [`src/data.js`](src/data.js): nombre, rol, textos, métricas,
 tecnologías, proyectos, experiencia y datos de contacto. No hace falta tocar los componentes.
 
-Para poner una foto: guardala en `img/foto.jpg` y escribí esa ruta en
-`perfil.foto` dentro de `data.js`. Si queda vacío, se muestran las iniciales.
+Para poner una foto: guardala en `public/` (por ejemplo `public/foto.jpg`) y escribí
+`foto: "/foto.jpg"` en `perfil`, dentro de `data.js`. Si queda vacío, se muestran las iniciales.
 
-Los colores están todos como variables CSS en `:root` (tema oscuro) y
-`:root[data-theme="light"]` (tema claro), al principio de `css/styles.css`.
+Los colores son variables CSS al principio de [`src/styles.css`](src/styles.css):
+`:root` para el tema oscuro y `:root[data-theme="light"]` para el claro.
 
 ## Qué incluye
 
-- Tema claro / oscuro con detección del sistema y recuerdo de la elección (`localStorage`)
+- Tema claro / oscuro con detección del sistema y memoria en `localStorage`
 - Navegación con resaltado de la sección visible y menú desplegable en celular
 - Filtro de proyectos con estado de React
 - Formulario de contacto con validación propia (abre el cliente de correo; no hay back-end)
 - Animaciones de entrada con `IntersectionObserver`, respetando `prefers-reduced-motion`
 - Diseño responsive y accesible (`aria-*`, foco visible, enlace para saltar al contenido)
 
-## Pasar a Vite (opcional)
+## Subirla a un hosting
 
-Si más adelante se quiere un build real, el camino es:
-`npm create vite@latest -- --template react`, mover los componentes a `.jsx`,
-reemplazar las funciones globales por `import` / `export` y quitar los `<script>`
-de CDN del `index.html`.
+`npm run build` deja todo en `dist/`. Como `vite.config.js` usa `base: "./"`, esa carpeta
+funciona tal cual dentro de una subcarpeta: se puede copiar a `htdocs` y abrirla en
+`http://localhost/clase4/dist/`, o subir su contenido por FTP a cualquier hosting estático.

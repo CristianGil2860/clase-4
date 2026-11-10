@@ -1,13 +1,13 @@
-/* Portada: nombre, titular con efecto de tipeo, llamadas a la acción y métricas. */
+import { useEffect, useState } from "react";
+import { perfil, contacto, stats } from "../data.js";
+import { IconPin, IconArrow, IconGithub } from "./Icons.jsx";
 
-function useTipeo(texto, velocidad) {
-  const [visible, setVisible] = React.useState("");
+/* Hook propio: muestra el texto letra por letra. */
+function useTipeo(texto, velocidad = 28) {
+  const [visible, setVisible] = useState("");
 
-  React.useEffect(function () {
-    const reduce =
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
+  useEffect(() => {
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
       setVisible(texto);
       return;
@@ -15,22 +15,26 @@ function useTipeo(texto, velocidad) {
 
     let i = 0;
     setVisible("");
-    const id = setInterval(function () {
+    const id = setInterval(() => {
       i += 1;
       setVisible(texto.slice(0, i));
       if (i >= texto.length) clearInterval(id);
-    }, velocidad || 28);
+    }, velocidad);
 
-    return function () { clearInterval(id); };
+    return () => clearInterval(id);
   }, [texto, velocidad]);
 
   return visible;
 }
 
-function Hero() {
-  const { perfil, contacto, stats } = window.DATA;
+export default function Hero() {
   const titular = useTipeo(perfil.titular, 26);
   const escribiendo = titular.length < perfil.titular.length;
+
+  const irA = (e, id) => {
+    e.preventDefault();
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section className="hero" id="inicio">
@@ -64,27 +68,11 @@ function Hero() {
             <p className="hero-text">{perfil.bajada}</p>
 
             <div className="hero-cta">
-              <a
-                className="btn btn-primary"
-                href="#contacto"
-                onClick={function (e) {
-                  e.preventDefault();
-                  const el = document.getElementById("contacto");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
+              <a className="btn btn-primary" href="#contacto" onClick={(e) => irA(e, "contacto")}>
                 Contactame <IconArrow />
               </a>
 
-              <a
-                className="btn btn-ghost"
-                href="#proyectos"
-                onClick={function (e) {
-                  e.preventDefault();
-                  const el = document.getElementById("proyectos");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
+              <a className="btn btn-ghost" href="#proyectos" onClick={(e) => irA(e, "proyectos")}>
                 Ver proyectos
               </a>
 
@@ -103,7 +91,7 @@ function Hero() {
 
           <div className="avatar">
             {perfil.foto ? (
-              <img src={perfil.foto} alt={"Foto de " + perfil.nombreCompleto} />
+              <img src={perfil.foto} alt={`Foto de ${perfil.nombreCompleto}`} />
             ) : (
               <span className="initials">{perfil.iniciales}</span>
             )}
@@ -111,14 +99,12 @@ function Hero() {
         </div>
 
         <div className="stats">
-          {stats.map(function (s) {
-            return (
-              <div className="stat" key={s.etiqueta}>
-                <div className="stat-value">{s.valor}</div>
-                <div className="stat-label">{s.etiqueta}</div>
-              </div>
-            );
-          })}
+          {stats.map((s) => (
+            <div className="stat" key={s.etiqueta}>
+              <div className="stat-value">{s.valor}</div>
+              <div className="stat-label">{s.etiqueta}</div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
