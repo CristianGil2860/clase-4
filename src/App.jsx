@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 import Nav from "./components/Nav.jsx";
 import Hero from "./components/Hero.jsx";
@@ -6,9 +6,15 @@ import Sobre from "./components/Sobre.jsx";
 import Skills from "./components/Skills.jsx";
 import Proyectos from "./components/Proyectos.jsx";
 import Experiencia from "./components/Experiencia.jsx";
+import Login from "./components/Login.jsx";
+import Registro from "./components/Registro.jsx";
+import Panel from "./components/Panel.jsx";
+import Recursos from "./components/Recursos.jsx";
 import Contacto from "./components/Contacto.jsx";
 import Footer from "./components/Footer.jsx";
-import { SECCIONES } from "./data.js";
+
+import { useAuth } from "./auth/AuthContext.jsx";
+import { seccionesVisibles } from "./data.js";
 
 /* Hook propio: guarda el tema elegido y lo recuerda entre visitas. */
 function useTema() {
@@ -40,12 +46,13 @@ function useTema() {
   return [tema, cambiarTema];
 }
 
-/* Hook propio: devuelve el id de la sección que se está viendo. */
-function useSeccionActiva() {
+/* Hook propio: devuelve el id de la sección que se está viendo.
+   Recibe las secciones porque cambian según haya sesión o no. */
+function useSeccionActiva(secciones) {
   const [activa, setActiva] = useState("");
 
   useEffect(() => {
-    const ids = SECCIONES.map((s) => s.id);
+    const ids = secciones.map((s) => s.id);
 
     const calcular = () => {
       let actual = "";
@@ -64,18 +71,29 @@ function useSeccionActiva() {
       window.removeEventListener("scroll", calcular);
       window.removeEventListener("resize", calcular);
     };
-  }, []);
+    // secciones cambia al entrar o salir: hay que recalcular con los ids nuevos
+  }, [secciones]);
 
   return activa;
 }
 
 export default function App() {
   const [tema, cambiarTema] = useTema();
-  const activa = useSeccionActiva();
+  const { logueado } = useAuth();
+
+  // useMemo para que el array no se recree en cada render: si cambiara
+  // siempre, el efecto del scroll se volvería a montar todo el tiempo.
+  const secciones = useMemo(() => seccionesVisibles(logueado), [logueado]);
+  const activa = useSeccionActiva(secciones);
 
   return (
     <>
-      <Nav tema={tema} onCambiarTema={cambiarTema} activa={activa} />
+      <Nav
+        tema={tema}
+        onCambiarTema={cambiarTema}
+        activa={activa}
+        secciones={secciones}
+      />
 
       <main>
         <Hero />
@@ -83,6 +101,20 @@ export default function App() {
         <Skills />
         <Proyectos />
         <Experiencia />
+
+        {/* Login y registro sólo tienen sentido sin sesión abierta */}
+        {!logueado && (
+          <>
+            <Login />
+            <Registro />
+          </>
+        )}
+
+        {/* Las dos secciones privadas: adentro deciden si muestran
+            el contenido o el candado, según haya sesión */}
+        <Panel />
+        <Recursos />
+
         <Contacto />
       </main>
 

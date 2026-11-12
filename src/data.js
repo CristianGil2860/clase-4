@@ -3,13 +3,39 @@
    Todo lo que se ve en la página sale de acá.
    ============================================================ */
 
-export const SECCIONES = [
+/* ---------- Secciones del menú ----------
+   Qué se muestra depende de si hay sesión abierta:
+   sin sesión aparecen Ingresar y Registrarse; con sesión, desaparecen. */
+
+export const SECCIONES_PUBLICAS = [
   { id: "sobre",       label: "Sobre mí" },
   { id: "skills",      label: "Tecnologías" },
   { id: "proyectos",   label: "Proyectos" },
   { id: "experiencia", label: "Experiencia" },
-  { id: "contacto",    label: "Contacto" },
 ];
+
+export const SECCIONES_AUTH = [
+  { id: "login",    label: "Ingresar" },
+  { id: "registro", label: "Registrarse" },
+];
+
+export const SECCIONES_PRIVADAS = [
+  { id: "panel",    label: "Panel",    privada: true },
+  { id: "recursos", label: "Recursos", privada: true },
+];
+
+export const SECCION_CONTACTO = { id: "contacto", label: "Contacto" };
+
+/* Las secciones en el mismo orden en que aparecen en la página.
+   Nav la usa para los links y App para saber qué sección se está viendo. */
+export function seccionesVisibles(logueado) {
+  return [
+    ...SECCIONES_PUBLICAS,
+    ...(logueado ? [] : SECCIONES_AUTH),
+    ...SECCIONES_PRIVADAS,
+    SECCION_CONTACTO,
+  ];
+}
 
 export const perfil = {
   nombre: "Cristian Gil",
@@ -186,6 +212,75 @@ export const experiencia = [
     detalle:
       "Sitios institucionales, formularios públicos y automatizaciones con Google " +
       "Apps Script y Excel.",
+  },
+];
+
+/* ---------- Recursos de la sección privada ----------
+   Si un recurso no tiene url, se muestra el texto de "accion" sin botón.
+   Para ofrecer una descarga real: poné el archivo en public/ (por ejemplo
+   public/cv.pdf) y escribí url: "/cv.pdf" con descarga: true. */
+export const recursos = [
+  {
+    id: "cv",
+    nombre: "CV completo en PDF",
+    tipo: "Documento",
+    descripcion:
+      "La versión larga: cada sistema con su stack, el rol que tuve y qué problema " +
+      "resolvía. Más detalle del que entra en la parte pública.",
+    accion: "Pedir por correo",
+    url: `mailto:${contacto.email}?subject=${encodeURIComponent("Pedido de CV completo")}`,
+    descarga: true,
+  },
+  {
+    id: "github",
+    nombre: "Repositorios de los proyectos",
+    tipo: "Código",
+    descripcion:
+      "El código de los sistemas que son públicos, para mirar cómo están armados " +
+      "por dentro: estructura, consultas y manejo de permisos.",
+    accion: "Ver en GitHub",
+    url: contacto.github,
+  },
+  {
+    id: "caso-notas",
+    nombre: "Caso de estudio: SistemaNotas",
+    tipo: "Caso de estudio",
+    descripcion:
+      "Cómo se modeló una gestión académica para varias escuelas y tres niveles a la " +
+      "vez, con escalas de notas distintas por nivel y una importación que se " +
+      "autodetecta por cabecera.",
+    accion: "Te lo cuento en una llamada",
+    url: "",
+  },
+  {
+    id: "caso-wspia",
+    nombre: "Caso de estudio: bot de WhatsApp con IA",
+    tipo: "Caso de estudio",
+    descripcion:
+      "Qué hace falta para poner un bot con IA a atender gente de verdad: control " +
+      "de costos, cortes de ritmo, contexto con caché y lectura de fotos y PDF.",
+    accion: "Disponible a pedido",
+    url: "",
+  },
+  {
+    id: "plantillas-pdf",
+    nombre: "Plantillas de PDF con TCPDF",
+    tipo: "Código",
+    descripcion:
+      "Base para generar formularios oficiales dibujando con coordenadas, cuando el " +
+      "HTML a PDF no alcanza porque el papel tiene que salir exacto.",
+    accion: "Disponible a pedido",
+    url: "",
+  },
+  {
+    id: "esquema-trabajo",
+    nombre: "Cómo trabajo y qué cobro",
+    tipo: "Documento",
+    descripcion:
+      "Etapas, entregables, plazos típicos y formas de pago. Lo mando antes de " +
+      "arrancar cualquier proyecto para que no haya sorpresas.",
+    accion: "Pedir por correo",
+    url: `mailto:${contacto.email}?subject=${encodeURIComponent("Consulta por esquema de trabajo")}`,
   },
 ];
 

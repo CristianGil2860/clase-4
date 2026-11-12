@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
-import { perfil, SECCIONES } from "../data.js";
-import { IconSun, IconMoon, IconMenu, IconClose } from "./Icons.jsx";
+import { perfil } from "../data.js";
+import { useAuth } from "../auth/AuthContext.jsx";
+import {
+  IconSun,
+  IconMoon,
+  IconMenu,
+  IconClose,
+  IconLock,
+  IconUser,
+  IconLogout,
+} from "./Icons.jsx";
 
-/* Barra de navegación: links con sección activa, cambio de tema
-   y menú desplegable en pantallas chicas. */
-export default function Nav({ tema, onCambiarTema, activa }) {
+/* Barra de navegación: links con sección activa, cambio de tema,
+   estado de la sesión y menú desplegable en pantallas chicas.
+   Las secciones llegan por props porque cambian según haya sesión. */
+export default function Nav({ tema, onCambiarTema, activa, secciones }) {
   const [abierto, setAbierto] = useState(false);
   const [scrolleado, setScrolleado] = useState(false);
+  const { usuario, logueado, salir } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolleado(window.scrollY > 8);
@@ -21,6 +32,11 @@ export default function Nav({ tema, onCambiarTema, activa }) {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  const cerrarSesion = () => {
+    setAbierto(false);
+    salir();
+  };
+
   return (
     <>
       <header className={"nav" + (scrolleado ? " is-scrolled" : "")}>
@@ -31,7 +47,7 @@ export default function Nav({ tema, onCambiarTema, activa }) {
           </a>
 
           <nav className="nav-links" aria-label="Secciones">
-            {SECCIONES.map((s) => (
+            {secciones.map((s) => (
               <a
                 key={s.id}
                 href={`#${s.id}`}
@@ -39,11 +55,31 @@ export default function Nav({ tema, onCambiarTema, activa }) {
                 onClick={(e) => irA(e, s.id)}
               >
                 {s.label}
+                {/* candadito en las secciones privadas mientras no haya sesión */}
+                {s.privada && !logueado && <IconLock size={13} />}
               </a>
             ))}
           </nav>
 
           <div className="nav-actions">
+            {logueado && (
+              <span className="sesion-chip" title={usuario.email}>
+                <IconUser size={15} />
+                <span className="sesion-nombre">{usuario.nombre.split(" ")[0]}</span>
+              </span>
+            )}
+
+            {logueado && (
+              <button
+                className="icon-btn"
+                onClick={cerrarSesion}
+                aria-label="Cerrar sesión"
+                title="Cerrar sesión"
+              >
+                <IconLogout size={18} />
+              </button>
+            )}
+
             <button
               className="icon-btn"
               onClick={onCambiarTema}
@@ -67,11 +103,18 @@ export default function Nav({ tema, onCambiarTema, activa }) {
 
       {abierto && (
         <div className="nav-mobile">
-          {SECCIONES.map((s) => (
+          {secciones.map((s) => (
             <a key={s.id} href={`#${s.id}`} onClick={(e) => irA(e, s.id)}>
               {s.label}
+              {s.privada && !logueado && <IconLock size={13} />}
             </a>
           ))}
+
+          {logueado && (
+            <button className="nav-mobile-salir" onClick={cerrarSesion}>
+              <IconLogout size={18} /> Cerrar sesión ({usuario.nombre.split(" ")[0]})
+            </button>
+          )}
         </div>
       )}
     </>

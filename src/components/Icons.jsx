@@ -121,3 +121,79 @@ export function IconPin(props) {
     </Svg>
   );
 }
+
+export function IconLock(props) {
+  return (
+    <Svg {...props}>
+      <rect x="4" y="10.5" width="16" height="10.5" rx="2.5" />
+      <path d="M8 10.5V7.8a4 4 0 0 1 8 0v2.7" />
+      <circle cx="12" cy="15.7" r="1.3" fill="currentColor" strokeWidth={0} />
+    </Svg>
+  );
+}
+
+export function IconUnlock(props) {
+  return (
+    <Svg {...props}>
+      <rect x="4" y="10.5" width="16" height="10.5" rx="2.5" />
+      <path d="M8 10.5V7.8a4 4 0 0 1 7.6-1.7" />
+      <circle cx="12" cy="15.7" r="1.3" fill="currentColor" strokeWidth={0} />
+    </Svg>
+  );
+}
+
+export function IconUser(props) {
+  return (
+    <Svg {...props}>
+      <circle cx="12" cy="8" r="3.6" />
+      <path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" />
+    </Svg>
+  );
+}
+
+export function IconUserPlus(props) {
+  return (
+    <Svg {...props}>
+      <circle cx="9.5" cy="8" r="3.6" />
+      <path d="M2.5 20.5a7 7 0 0 1 14 0" />
+      <path d="M19 8v6M22 11h-6" />
+    </Svg>
+  );
+}
+
+export function IconLogout(props) {
+  return (
+    <Svg {...props}>
+      <path d="M15 4.5h3.5A1.5 1.5 0 0 1 20 6v12a1.5 1.5 0 0 1-1.5 1.5H15" />
+      <path d="M10 16l-4-4 4-4M6 12h10" />
+    </Svg>
+  );
+}
+
+export function IconDownload(props) {
+  return (
+    <Svg {...props}>
+      <path d="M12 3.5v11M7.5 10l4.5 4.5L16.5 10" />
+      <path d="M4.5 19.5h15" />
+    </Svg>
+  );
+}
+
+export function IconEye(props) {
+  return (
+    <Svg size={18} {...props}>
+      <path d="M2.5 12S6 5.5 12 5.5S21.5 12 21.5 12S18 18.5 12 18.5S2.5 12 2.5 12z" />
+      <circle cx="12" cy="12" r="3" />
+    </Svg>
+  );
+}
+
+export function IconEyeOff(props) {
+  return (
+    <Svg size={18} {...props}>
+      <path d="M4 4l16 16" />
+      <path d="M9.9 5.9A9.6 9.6 0 0 1 12 5.5c6 0 9.5 6.5 9.5 6.5a17 17 0 0 1-2.7 3.6M6.2 7.8A17 17 0 0 0 2.5 12S6 18.5 12 18.5c.9 0 1.7-.1 2.5-.4" />
+      <path d="M9.9 10.2a3 3 0 0 0 4 4.1" />
+    </Svg>
+  );
+}
