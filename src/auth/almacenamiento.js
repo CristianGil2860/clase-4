@@ -145,6 +145,29 @@ export function actualizarDatos(email, parcial) {
   return aPublico(actualizado);
 }
 
+/* ---------- cuenta de prueba ---------- */
+
+// Se guarda la promesa para que la siembra corra una sola vez, aunque
+// React en modo estricto ejecute el efecto dos veces en desarrollo.
+let promesaSiembra = null;
+
+async function sembrar(demo) {
+  if (!demo?.email) return false;
+
+  // Si la cuenta ya existe no la vuelve a crear, así no pisa sus notas
+  // ni sus favoritos. Las demás cuentas no se tocan nunca.
+  const limpio = normalizarEmail(demo.email);
+  if (listarUsuarios().some((u) => u.email === limpio)) return false;
+
+  const resultado = await crearUsuario(demo);
+  return resultado.ok;
+}
+
+export function sembrarCuentaDemo(demo) {
+  if (!promesaSiembra) promesaSiembra = sembrar(demo);
+  return promesaSiembra;
+}
+
 /* ---------- sesión ---------- */
 
 export function guardarSesion(email) {

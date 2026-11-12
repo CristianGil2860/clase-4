@@ -374,6 +374,15 @@ button { font: inherit; cursor: pointer; }
 }
 .ver-password:hover { color: var(--text); background: var(--surface-2); }
 
+.demo-aviso {
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 14px 16px; border-radius: var(--radius-s);
+  background: var(--surface-2); border: 1px dashed var(--border);
+  font-size: 14px;
+}
+.demo-datos { font-size: 13px; color: var(--text-dim); margin-top: 3px; word-break: break-all; }
+.btn-chico { padding: 8px 14px; font-size: 13.5px; flex: 0 0 auto; }
+
 .form-error {
   padding: 12px 14px; border-radius: var(--radius-s); font-size: 14.5px;
   background: var(--surface-2); border: 1px solid var(--err); color: var(--text);

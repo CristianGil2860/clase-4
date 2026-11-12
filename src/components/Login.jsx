@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Section, { Reveal } from "./Section.jsx";
 import { useAuth, RE_EMAIL } from "../auth/AuthContext.jsx";
+import { cuentaDemo } from "../data.js";
 import { IconUser, IconArrow, IconEye, IconEyeOff, IconLock } from "./Icons.jsx";
 
 export default function Login() {
@@ -51,6 +52,28 @@ export default function Login() {
             <div className="auth-icon">
               <IconUser size={22} />
             </div>
+
+            {cuentaDemo && (
+              <div className="demo-aviso">
+                <div>
+                  <strong>Cuenta de prueba</strong>
+                  <div className="demo-datos mono">
+                    {cuentaDemo.email} · {cuentaDemo.password}
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="btn btn-ghost btn-chico"
+                  onClick={() => {
+                    setForm({ email: cuentaDemo.email, password: cuentaDemo.password });
+                    setErrores({});
+                  }}
+                >
+                  Completar
+                </button>
+              </div>
+            )}
 
             <div className="field">
               <label htmlFor="login-email">Correo</label>

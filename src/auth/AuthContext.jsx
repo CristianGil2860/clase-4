@@ -5,9 +5,11 @@ import {
   borrarSesion,
   crearUsuario,
   guardarSesion,
+  sembrarCuentaDemo,
   usuarioDeLaSesion,
   verificarCredenciales,
 } from "./almacenamiento.js";
+import { cuentaDemo } from "../data.js";
 
 /* Estado de la sesión para toda la app.
    La parte que toca localStorage vive en almacenamiento.js;
@@ -19,6 +21,12 @@ export function AuthProvider({ children }) {
   // Al arrancar recupera la sesión guardada, si la hay.
   const [usuario, setUsuario] = useState(() => usuarioDeLaSesion());
   const [cargando, setCargando] = useState(false);
+
+  // Crea la cuenta de prueba la primera vez que se abre la página.
+  // No inicia sesión: sólo deja la cuenta lista para poder entrar.
+  useEffect(() => {
+    sembrarCuentaDemo(cuentaDemo);
+  }, []);
 
   // Si la página está abierta en dos pestañas, la sesión se mantiene
   // sincronizada: el evento "storage" avisa a las demás pestañas.

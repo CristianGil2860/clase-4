@@ -57,13 +57,29 @@ clase4/
 
 ## Login, registro y secciones privadas
 
+### Cuenta de prueba
+
+Para entrar sin registrarse, la app crea sola esta cuenta al abrir la página:
+
+```
+correo:      demo@demo.com
+contraseña:  demo1234
+```
+
+En la sección **Iniciar sesión** aparece el recuadro con esos datos y un botón
+**Completar** que llena el formulario. Si la cuenta ya existe no se vuelve a crear, así
+que no se pierden sus notas ni sus favoritos; y las cuentas que registres vos no se tocan.
+Para desactivarla, poné `cuentaDemo = null` en [`src/data.js`](src/data.js).
+
 ### Cómo probarlo
 
-1. `npm run dev` y bajá hasta **Registrarse**.
-2. Creá una cuenta con cualquier nombre, correo y una contraseña de 6 caracteres o más.
-3. Al crearla, la sesión queda abierta: desaparecen Ingresar y Registrarse, y se
-   desbloquean **Panel** y **Recursos**.
-4. Recargá la página: seguís adentro, porque la sesión está en `localStorage`.
+1. `npm run dev` y entrá con la cuenta de prueba, o bajá hasta **Registrarse** y creá una
+   con cualquier nombre, correo y una contraseña de 6 caracteres o más.
+2. Con la sesión abierta desaparecen Ingresar y Registrarse, y se desbloquean **Panel** y
+   **Recursos**.
+3. Escribí algo en las notas del Panel y marcá un par de recursos con la estrella.
+4. Recargá la página: seguís adentro y tus notas y favoritos siguen ahí, porque están en
+   `localStorage`.
 5. Cerrá sesión con el botón de la navbar: las dos secciones privadas vuelven a mostrar
    el candado.
 

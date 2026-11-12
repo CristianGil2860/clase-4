@@ -215,6 +215,17 @@ export const experiencia = [
   },
 ];
 
+/* ---------- Cuenta de prueba ----------
+   La app la crea sola al abrir la página si todavía no existe, así siempre
+   hay con qué entrar sin tener que registrarse (por ejemplo, para mostrar el
+   trabajo en clase). No pisa sus datos si ya existe, ni toca las otras
+   cuentas. Para desactivarla: cuentaDemo = null. */
+export const cuentaDemo = {
+  nombre: "Invitado de prueba",
+  email: "demo@demo.com",
+  password: "demo1234",
+};
+
 /* ---------- Recursos de la sección privada ----------
    Si un recurso no tiene url, se muestra el texto de "accion" sin botón.
    Para ofrecer una descarga real: poné el archivo en public/ (por ejemplo
